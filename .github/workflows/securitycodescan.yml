@@ -21,14 +21,15 @@ jobs:
   SCS:
     runs-on: windows-latest
     steps:
-      - name: Harden the runner (Audit all outbound calls)
+      - name: Harden the runner
         uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
-          egress-policy: audit
+          use-policy-store: true
+          api-key: ${{ secrets.STEP_SECURITY_API_KEY }}
 
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-      - uses: nuget/setup-nuget@04b0c2b8d1b97922f67eca497d7cf0bf17b8ffe1
-      - uses: microsoft/setup-msbuild@c26a08ba26249b81327e26f6ef381897b6a8754d # v1.0.2
+      - uses: step-security/setup-nuget@b53c6b9c5a37611f049ad5ebbbd184d01ff97009 # v4.0.1
+      - uses: step-security/setup-msbuild@f01243490939309baa8e659042bec579fa10db95 # v2.0.1
 
       - name: Set up projects for analysis
         uses: security-code-scan/security-code-scan-add-action@f8ff4f2763ed6f229eded80b1f9af82ae7f32a0d

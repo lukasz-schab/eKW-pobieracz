@@ -30,17 +30,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # Checkout the repository to the GitHub Actions runner
-    - name: Harden the runner (Audit all outbound calls)
+    - name: Harden the runner
       uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
       with:
-        egress-policy: audit
+        use-policy-store: true
+        api-key: ${{ secrets.STEP_SECURITY_API_KEY }}
 
     - name: Checkout
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
     # Customize the ruby version depending on your needs
     - name: Setup Ruby
-      uses: ruby/setup-ruby@55283cc23133118229fd3f97f9336ee23a179fcf # v1.146.0
+      uses: step-security/setup-ruby@37a6ba0604c7193dff21a6bfe974221525e0b2b8 # v1.321.0
       with:
         ruby-version: '2.7'
 

@@ -38,10 +38,11 @@ jobs:
     name: SOOS DAST Analysis
     runs-on: ubuntu-latest
     steps:
-      - name: Harden the runner (Audit all outbound calls)
+      - name: Harden the runner
         uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
         with:
-          egress-policy: audit
+          use-policy-store: true
+          api-key: ${{ secrets.STEP_SECURITY_API_KEY }}
 
       - name: Run SOOS DAST Analysis
         uses: soos-io/soos-dast-github-action@65d9878d77c8993f3db9e86a92bc2ad3a6e060af

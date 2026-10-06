@@ -33,10 +33,11 @@ jobs:
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
     runs-on: ubuntu-latest
     steps:
-    - name: Harden the runner (Audit all outbound calls)
+    - name: Harden the runner
       uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
       with:
-        egress-policy: audit
+        use-policy-store: true
+        api-key: ${{ secrets.STEP_SECURITY_API_KEY }}
 
     - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
     - name: Build a Docker image
@@ -45,7 +46,7 @@ jobs:
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
       continue-on-error: true
-      uses: snyk/actions/docker@14818c4695ecc4045f33c9cee9e795a788711ca4
+      uses: step-security/snyk-actions/docker@3ccbd440152e3235d4b9d631c16badbc85807eca # v1.0.0
       env:
         # In order to use the Snyk Action you will need to have a Snyk API token.
         # More details in https://github.com/snyk/actions#getting-your-snyk-token
