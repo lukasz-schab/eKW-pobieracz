@@ -26,17 +26,18 @@ jobs:
       contents: write # required to upload to the Dependency submission API
     runs-on: ubuntu-latest
     steps:
-    - name: Harden the runner (Audit all outbound calls)
+    - name: Harden the runner
       uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
       with:
-        egress-policy: audit
+        use-policy-store: true
+        api-key: ${{ secrets.STEP_SECURITY_API_KEY }}
 
     - name: Checkout the code
       uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag localbuild/testimage:latest
     - name: Scan the image and upload dependency results
-      uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
+      uses: step-security/sbom-action@28bb7d0d2869c9ab0e5571c93591747945819d39 # v0.24.2
       with:
         image: "localbuild/testimage:latest"
         artifact-name: image.spdx.json
